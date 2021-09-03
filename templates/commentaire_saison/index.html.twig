@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CommentaireEpisodeController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <tr>
+        <th>Commentaire Laissé</th>
+        {% for commentaire in comments %}
+            <td>
+                <a href="{{ path('episode_show', {'id': commentaire.getEpisode().getId() }) }}"> Voir l'épisode
+                    <br>
+                </a>
+            </td>
+            <td>{{ commentaire.getDescriptif() }}</td>
+            <a href="{{ path('commentsSaison_edit', {'id': commentaire.id,'Saison' : commentaire.Episode().getId()}) }}">edit com</a>
+            <form method="post" action="{{ path('commentsSaison_delete', {'id': commentaire.getId()}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ commentaire.getId()) }}">
+                <button class="btn">Delete</button>
+            </form>
+        {% endfor %}
+    </tr>
+</div>
+{% endblock %}
+

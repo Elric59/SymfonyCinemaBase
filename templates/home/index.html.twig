@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h1 class="mt-5 text-colorC">Nos nouveautés</h1>
+
+    <div class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% set cpt=0 %}
+            {% for last_serie in list_series %}
+                {% if cpt==0 %}
+                    <div class="carousel-item active">
+                        <div class="d-flex justify-content-center">
+                            <a href="{{ path('series_show', {'id': last_serie.id}) }}">
+                                <img src="{{ asset( serie_image~last_serie.image) }}" height="400" width="600"
+                                     alt="...">
+                            </a>
+                        </div>
+                    </div>
+                    {% set cpt=1 %}
+                {% else %}
+                    <div class="carousel-item">
+                        <div class="d-flex justify-content-center">
+                            <a href="{{ path('series_show', {'id': last_serie.id}) }}">
+                                <img src="{{ asset( serie_image~last_serie.image) }}" height="400" width="600"
+                                     alt="...">
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <h1 class="mt-5 text-colorC">Notre selection de séries</h1>
+
+
+    {% for list_serie in list_series %}
+
+        <div style="display: inline-block; margin-right: 10px">
+            <div class="card " style="width: 18rem;">
+                <a href="{{ path('series_show', {'id': list_serie.id}) }}">
+                    <img class="d-block position-relative rounded"
+                         src="{{ serie_image~list_serie.image }}" alt="Affiche_Serie" height="200" width="285"/>
+                </a>
+                <div class="card-body">
+                    <a href="{{ path('series_show', {'id': list_serie.id}) }}">
+                        <b class="card-title" style="font-size: 20px;">{{ list_serie.nomSerie }}</b>
+                    </a>
+                    <p class="card-text" style="margin-top: 13px;">Description : {{ list_serie.descriptionSerie }}</p>
+                    <p>Année : {{ list_serie.dateSortie ? list_serie.dateSortie|date('d/m/Y') : '' }}</p>
+                    <p>Genre :
+                        {% for genreSerie in list_serie.Genre %}
+                            {{ genreSerie.getNomGenre() }}
+                        {% endfor %}
+                    </p>
+                    <p> Acteurs :
+                        {% for acteurSerie in list_serie.Acteur %}
+                            {{ acteurSerie.getNameActor() }}
+                        {% endfor %}
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+
+
+    <h1 class="mt-5 text-colorC">Notre selection de Films</h1>
+
+    {% for list_film in list_films %}
+
+        <div style="display: inline-block; margin-right: 10px">
+            <div class="card " style="width: 18rem; height: 30rem">
+                <a href="{{ path('film_show', {'id': list_film.id}) }}">
+                    <img class="d-block position-relative rounded"
+                         src="{{ film_image~list_film.image }}" alt="Affiche Film" height="200" width="285"/>
+                </a>
+                <div class="card-body">
+                    <a href="{{ path('film_show', {'id': list_film.id}) }}">
+                        <b class="card-title" style="font-size: 20px;">{{ list_film.nomFilm }}</b>
+                    </a>
+                    <p class="card-text" style="margin-top: 13px;">Description : {{ list_film.descriptionFilm }}</p>
+                    <p>Année : {{ list_film.dateSortie ? list_film.dateSortie|date('d/m/Y') : '' }}</p>
+                    <p>Genre :
+                        {% for genreSerie in list_film.Genre %}
+                            {{ genreSerie.getNomGenre() }}
+                        {% endfor %}
+                    </p>
+                    <p> Acteur :
+                        {% for acteurSerie in list_film.Acteur %}
+                            {{ acteurSerie.getNameActor() }}
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+
+    {% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}saisons{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="ficheModif">
+            <a class="btn btn-primary" href="{{ path('saison_edit', {'id': saisons.id}) }}" style="padding-right: 30px">
+                Editer le saison
+            </a>
+            {{ include('saison/_delete_form.html.twig') }}
+        </div>
+    {% endif %}
+<div style="display: flex">
+    <div class="card fiche">
+        <img class="d-block position-relative rounded w-100 h-100"
+             src="{{ asset( saison_image~saisons.image) }}" alt="Affiche_Serie"/>
+        <div class="card-body">
+            <h5 class="card-title">{{ saisons.nomSaison }}</h5>
+            <b class="card-text">{{ saisons.descriptionSaison }}</b><br>
+            <b>Créée le : </b>{{ saisons.dateSortie ? saisons.dateSortie|date('Y-m-d') : '' }}<br>
+            <b>Episode :</b>
+            <a class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink"
+               data-bs-toggle="dropdown" aria-expanded="false">
+                Voir les Episodes
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                {% for episode in episodes %}
+                    <li>
+                        <a href="{{ path('episode_show', {'id': episode.id}) }}">
+                            {{ episode.nomEpisode }}<br>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="commentaire">
+        {% if is_granted('ROLE_USER') %}
+            <a href="{{ path('commentsSaison_new', {'id': saisons.id}) }}">
+                Ajouter un commentaire
+            </a>
+        {% endif %}
+        <section>
+            <h2>Les avis</h2>
+            {% if comments == null %}
+                <p> Pas d'avis :/</p>
+            {% else %}
+                {% for avi in comments %}
+                    <p>{{ avi.User.username }} :<br>{{ avi.Descriptif }} </p>
+                    <p></p>
+                {% endfor %}
+            {% endif %}
+        </section>
+    </div>
+</div>
+{% endblock %}
+

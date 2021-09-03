@@ -1,0 +1,97 @@
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
+
+<div class="p-4 w-100 bg-dark">
+    <div class="d-flex flex-wrap justify-content-around align-items-center">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a href="{{ path('home') }}">
+                <img style="height: 50px;" src="{{ asset(user_path~'/logo-white.png') }}" alt="LogoSite">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item active">
+                        <a class="btn-component btn bg-colorB text-white font-weight-bold rounded border-0"
+                           role="button"
+                           href="{{ path('series_new') }}">nouvelle serie
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="btn-component btn bg-colorB text-white font-weight-bold rounded border-0"
+                           role="button"
+                           href="{{ path('saisons_new') }}">nouvelle saison
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn-component btn bg-colorB text-white font-weight-bold rounded border-0"
+                           role="button"
+                           href="{{ path('episodes_new') }}">nouvelle episode
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn-component btn bg-colorB text-white font-weight-bold rounded border-0"
+                           role="button"
+                           href="{{ path('films_new') }}">nouveau film
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn-component btn bg-colorB text-white font-weight-bold rounded border-0"
+                           role="button"
+                           href="{{ path('acteurs_new') }}">nouvelle acteur
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn-component btn bg-colorB text-white font-weight-bold rounded border-0"
+                           role="button"
+                           href="{{ path('genres_new') }}">nouveau genre
+                        </a>
+                    </li>
+                    {% endif %}
+
+                </ul>
+                <div class="d-flex flex-row-reverse">
+
+                    <!-- Si loged in-->
+                    {% if is_granted('ROLE_USER') %}
+                        <div class="p-2">
+                        <a class="btn btn-outline-danger" href="{{ path('app_logout') }}" role="button">
+                            Disconnect
+                        </a>
+                        </div>
+                        <div class="p-2">
+                        <a class="btn btn-outline-success" href="{{ path('user_show', {'id': app.user.id}) }}"
+                           role="button">
+                            {{ app.user.username }}
+                            {% if app.user.avatar != null %}
+                                <img style="max-width:150px;" src="{{ asset(user_path~'/'~app.user.avatar) }}"
+                                     class="img-thumbnail" alt="avatar"/>
+                            {% endif %}
+
+                            {% if is_granted('ROLE_ADMIN') %}
+                                [ADMIN]
+                            {% endif %}
+                        </a>
+                        </div>
+
+                        <!-- Si non loged in-->
+                    {% else %}
+                        <a class="btn-component btn bg-colorB text-white font-weight-bold rounded border-0" role="button"
+                           href="{{ path('app_login') }}">Log me</a>
+                        <a class="btn-component btn bg-colorB text-white font-weight-bold rounded border-0"
+                           href="{{ path('app_register') }}">S'inscrire</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+
+{% block javascripts %}{{ encore_entry_script_tags('app') }}{% endblock %}
+

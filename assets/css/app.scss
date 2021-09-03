@@ -1,0 +1,22 @@
+@import "global.scss";
+@import "cindy.scss";
+@import "fiche-de-serie.css";
+@import "~bootstrap/scss/bootstrap";
+
+.fiche{
+
+    margin:2% 0 10px 30%;
+    float:none;
+    width:18rem;
+}
+
+.commentaire{
+    margin:5% 0 0 10%;
+}
+body {
+    background-color: lightgray;
+}
+
+.ficheModif{
+    margin:0 5% 10px 30%;
+}

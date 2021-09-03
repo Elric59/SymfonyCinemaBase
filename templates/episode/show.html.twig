@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}episode{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="ficheModif">
+            <a href="{{ path('episode_edit', {'id': episode.id}) }}" >
+                editer l'épisode
+            </a>
+            {{ include('episode/_delete_form.html.twig') }}
+        </div>
+    {% endif %}
+    <div style="display: flex">
+
+        <div class="card fiche">
+            <img class="d-block position-relative rounded w-100 h-100"
+                 src="{{ asset( episode_image~episode.image) }}" alt="Affiche_Serie"/>
+            <div class="card-body">
+                <h5 class="card-title">{{ episode.nomEpisode }}</h5>
+                <b class="card-text">{{ episode.descriptionEpisode }}</b><br>
+                <b>Créée le : </b>{{ episode.dateSortie ? episode.dateSortie|date('Y-m-d') : '' }}<br>
+            </div>
+        </div>
+        <div class="commentaire">
+            {% if is_granted('ROLE_USER') %}
+                <a href="{{ path('commentsEpisode_new', {'id': episode.id}) }}">
+                    Ajouter un commentaire
+                </a>
+            {% endif %}
+            <section>
+                <h2>Les avis</h2>
+                {% if comments == null %}
+                    <p> Pas d'avis :/</p>
+                {% else %}
+                    {% for avi in comments %}
+                        <p>{{ avi.User.username }} :<br>{{ avi.Descriptif }} </p>
+                        <p></p>
+                    {% endfor %}
+                {% endif %}
+            </section>
+        </div>
+    </div>
+{% endblock %}
+
+

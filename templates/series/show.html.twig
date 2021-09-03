@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Series{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="ficheModif">
+            <a class="btn btn-primary" href="{{ path('series_edit', {'id': series.id}) }}" style="padding-right: 30px">
+                Editer le serie
+            </a>
+            {{ include('series/_delete_form.html.twig') }}
+        </div>
+    {% endif %}
+    <div style="display: flex">
+        <div class="card fiche">
+
+            <img class="d-block position-relative rounded w-100 h-100"
+                 src="{{ asset( serie_image~series.image) }}" alt="Affiche_Serie"/>
+            <div class="card-body">
+                <h5 class="card-title">{{ series.nomSerie }}</h5>
+                <b class="card-text">{{ series.descriptionSerie }}</b><br>
+                <b>Créée le : </b>{{ series.dateSortie ? series.dateSortie|date('Y-m-d') : '' }}<br>
+                <b>Genre :</b>
+                {% for genreSerie in series.Genre %}
+                    <b>{{ genreSerie.getNomGenre() }}</b>
+                {% endfor %}
+                <br>
+                <b> Acteur :</b>
+                {% for acteurSerie in series.Acteur %}
+                <b>{{ acteurSerie.getNameActor() }}</b>
+                {% endfor %}<br>
+                <b>Saison :</b>
+
+                <a class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    Voir les Saisons
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    {% for saison in saisons %}
+                        <li><a class="dropdown-item"
+                               href="{{ path('saison_show', {'id': saison.id}) }}">{{ saison.getNomSaison() }}</a></li>
+                    {% endfor %}
+                </ul>
+                {% if is_granted('ROLE_USER') %}
+                <a class="btn btn-primary" href="{{ path('sauvegarde_new', {'id': series.id}) }}">Sauvegarder la serie </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="commentaire">
+            {% if is_granted('ROLE_USER') %}
+                <a href="{{ path('commentsSerie_new', {'id': series.id}) }}">
+                    Ajouter un commentaire
+                </a>
+            {% endif %}
+            <section>
+                <h2>Les avis</h2>
+                {% if avis == null %}
+                    <p> Pas d'avis :/</p>
+                {% else %}
+                    {% for avi in avis %}
+                        <p>{{ avi.User.username }} :<br>{{ avi.Descriptif }} </p>
+                        <p></p>
+                    {% endfor %}
+                {% endif %}
+            </section>
+        </div>
+    </div>
+{% endblock %}

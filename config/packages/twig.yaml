@@ -1,0 +1,10 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    form_themes: ['bootstrap_4_layout.html.twig']
+    globals:
+        user_path: '%user_path%'
+        error_path: '%error_path%'
+        serie_image: '%serie_image%'
+        film_image: '%film_image%'
+        episode_image: '%episode_image%'
+        saison_image: '%saison_image%'

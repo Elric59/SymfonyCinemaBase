@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Film{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="ficheModif">
+            <a class="btn btn-primary" href="{{ path('film_edit', {'id': film.id}) }}" style="padding-right: 30px">
+                Editer le film
+            </a>
+            {{ include('film/_delete_form.html.twig') }}
+        </div>
+    {% endif %}
+    <div style="display: flex">
+
+        <div class="card fiche">
+            <img class="d-block position-relative rounded w-100 h-100"
+                 src="{{ asset( film_image~film.image) }}" alt="Affiche_Serie"/>
+            <div class="card-body">
+                <h5 class="card-title">{{ film.nomFilm }}</h5>
+                <b class="card-text">{{ film.descriptionFilm }}</b><br>
+                <b>Créée le : </b>{{ film.dateSortie ? film.dateSortie|date('Y-m-d') : '' }}<br>
+            </div>
+            {% if is_granted('ROLE_USER') %}
+                <a class="btn btn-primary" href="{{ path('sauvegardeFilm_new', {'id': film.id}) }}">Sauvegarder le film </a>
+            {% endif %}
+        </div>
+
+        <div class="commentaire">
+            {% if is_granted('ROLE_USER') %}
+                <a href="{{ path('commentsFilm_new', {'id': film.id}) }}">
+                    Ajouter un commentaire
+                </a>
+            {% endif %}
+            <section>
+                <h2>Les avis</h2>
+                {% if comments == null %}
+                    <p> Pas d'avis :/</p>
+                {% else %}
+                    {% for avi in comments %}
+                        <p>{{ avi.User.username }} :<br>{{ avi.Descriptif }} </p>
+                        <p></p>
+                    {% endfor %}
+                {% endif %}
+            </section>
+        </div>
+    </div>
+{% endblock %}
+
